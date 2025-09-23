@@ -2,6 +2,6 @@
 {
     public interface IGuidGenerator
     {
-        static abstract string GenerateGuid();
+        string GenerateGuid();
     }
 }

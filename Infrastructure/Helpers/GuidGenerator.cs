@@ -4,7 +4,7 @@ namespace Infrastructure.Helpers;
 
 public class GuidGenerator : IGuidGenerator
 {
-    public static string GenerateGuid()
+    public string GenerateGuid()
     {
         return Guid.NewGuid().ToString();
     }
