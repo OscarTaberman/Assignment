@@ -6,12 +6,11 @@ namespace ProductService;
 
 public class ProductService
 {
-    public ProductService(BaseProduct product)
+    public bool (BaseProduct product, object Item)
     {
-        return new ProductResult
+        return new bool
         {
-            Success = true,
-            Error = false,
+            return true
         };
     }
 
