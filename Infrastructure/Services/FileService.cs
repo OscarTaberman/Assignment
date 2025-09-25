@@ -1,23 +1,45 @@
 ﻿using Infrastructure.Interfaces;
+using Infrastructure.Models;
 
 namespace Infrastructure.Services;
 
 public class FileService : IFileService
 {
-    public bool SaveProductToFile(string filePath, string productContent)
+    public ProductResults<string> SaveProductToFile(string filePath, string productContent)
     {
         try
         {
-            return new bool { };
+            return new ProductResults<string>
+            {
+                Success = true
+            };
         }
         catch (Exception ex)
         {
-            return new bool {  };
+            return new ProductResults<string>
+            {
+                Success = false,
+                Error = ex.Message
+            };
         }
     }
 
-    public string GetProductFromFile(string filePath)
+    public ProductResults<string> GetProductFromFile(string filePath)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return new ProductResults<string>
+            {
+                Success = true
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ProductResults<string>
+            {
+                Success = false,
+                Error = ex.Message
+            };
+        }
     }
 }

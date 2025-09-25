@@ -1,40 +1,32 @@
 ﻿using Infrastructure.Interfaces;
 using Infrastructure.Models;
 
+namespace Infrastructure.Services;
 
-namespace ProductService;
-
-public class ProductService
+public class ProductService : IProductService
 {
-    public bool (BaseProduct product, object Item)
+    public bool CreatePoduct(CreateProduct product)
     {
-        return new bool
-        {
-            return true
-        };
+        throw new NotImplementedException();
     }
 
-    public string DeleteProduct(BaseProduct product)
+    public bool DeleteProduct(string id)
     {
-        return new ProductResult
-        {
-            Success = true,
-            Error = false,
-        };
+        throw new NotImplementedException();
     }
 
-    public ProductResult<IEnumerable<BaseProduct>> ReadAllProducts()
+    public IEnumerable<ProductModel> GetAllProducts()
     {
-        return new ProductResult<IEnumerable<BaseProduct>>();
-
+        throw new NotImplementedException();
     }
 
-    public UpdateProduct(BaseProduct product)
+    public ProductModel GetProduct(string id)
     {
-        return new ProductResult
-        {
-            Success = true,
-            Error = false,
-        };
+        throw new NotImplementedException();
+    }
+
+    public bool UpdateProduct(string id, UpdateProduct product)
+    {
+        throw new NotImplementedException();
     }
 }

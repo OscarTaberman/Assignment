@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.Models;
 
-public class BaseProduct
+public class ProductModel
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string? ArticleNumber { get; set; }
@@ -12,8 +12,19 @@ public class BaseProduct
 
 public class CreateProduct
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public string? ArticleNumber { get; set; }
+    public bool IsService { get; set; }
     public string Name { get; set; } = null!;
+    public string Description { get; set; } = null!;
+    public decimal Price { get; set; }
+}
+
+public class UpdateProduct
+{
+    public string? ArticleNumber { get; set; }
+    public bool IsService { get; set; }
+    public string Name { get; set; } = null!;
+    public string Description { get; set; } = null!;
     public decimal Price { get; set; }
 }
 
@@ -23,7 +34,7 @@ public class Category
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
 
-    public List<BaseProduct> Products { get; set; } = new();
+    public List<ProductModel> Products { get; set; } = new();
 }
 
 public class ProductSupplier
