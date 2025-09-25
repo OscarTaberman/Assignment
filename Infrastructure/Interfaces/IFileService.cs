@@ -1,7 +1,9 @@
-﻿namespace Infrastructure.Interfaces;
+﻿using Infrastructure.Models;
+
+namespace Infrastructure.Interfaces;
 
 public interface IFileService
 {
-    bool SaveProductToFile(string filePath, string productContent);
-    string GetProductFromFile(string filePath);
+    ProductResults<string> SaveProductToFile(string filePath, string productContent);
+    ProductResults<string> GetProductFromFile(string filePath);
 }

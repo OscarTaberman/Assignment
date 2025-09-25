@@ -5,7 +5,8 @@ namespace Infrastructure.Interfaces;
 public interface IProductService
 {
     bool CreatePoduct(CreateProduct product);
-    IEnumerable<BaseProduct> GetAllProducts();
-    bool UpdateProduct(BaseProduct product);
-    bool DeleteProduct();
+    IEnumerable<ProductModel> GetAllProducts();
+    ProductModel GetProduct(string id);
+    bool UpdateProduct(string id, UpdateProduct product);
+    bool DeleteProduct(string id);
 }
