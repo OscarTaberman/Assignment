@@ -4,6 +4,6 @@ namespace Infrastructure.Interfaces;
 
 public interface IFileService
 {
-    ProductResults<string> SaveProductToFile(string filePath, string productContent);
-    ProductResults<string> GetProductFromFile(string filePath);
+    Results<string> SaveProductToFile(string filePath, string productContent);
+    Results<string> GetProductFromFile(string filePath);
 }
