@@ -7,15 +7,15 @@ public class ProductService : IProductService
 {
     private readonly List<ProductModel> _products = [];
 
-    public Results CreatePoduct(CreateProduct product)
+    public Results CreateProduct(CreateProduct product)
     {
-        var newProduct = new ProductModel();
+        var newProduct = new ProductModel
         {
-            newProduct.Name = product.Name;
-            newProduct.ArticleNumber = product.ArticleNumber;
-            newProduct.Description = product.Description;
-            newProduct.Price = product.Price;
-        }
+            Name = product.Name,
+            ArticleNumber = product.ArticleNumber,
+            Description = product.Description,
+            Price = product.Price,
+        };
 
         _products.Add(newProduct);
 
@@ -23,12 +23,25 @@ public class ProductService : IProductService
         {
             Success = true,
             Error = null,
+            Data = newProduct
         };
     }
 
-    Results<IEnumerable<ProductModel>> IProductService.ShowAllProducts()
+    public Results<IEnumerable<ProductModel>> ShowAllProducts(ProductModel product)
     {
-        throw new NotImplementedException();
+        var productList = new ProductModel()
+        {
+            Name = product.Name,
+            ArticleNumber = product.ArticleNumber,
+            Description = product.Description,
+            Price = product.Price,
+        };
+
+        return new Results<IEnumerable<ProductModel>>
+        {
+            Success = true,
+            Error = null,
+        };
     }
 
     public ProductModel GetAProduct(string id)
