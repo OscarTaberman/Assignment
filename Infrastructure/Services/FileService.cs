@@ -5,11 +5,11 @@ namespace Infrastructure.Services;
 
 public class FileService : IFileService
 {
-    public Results<string> SaveProductToFile(string filePath, string productContent)
+    public Response<string> SaveProductToFile(string filePath, string productContent)
     {
         try
         {
-            return new Results<string>
+            return new Response<string>
             {
                 Success = true,
                 Data = productContent
@@ -17,7 +17,7 @@ public class FileService : IFileService
         }
         catch (Exception ex)
         {
-            return new Results<string>
+            return new Response<string>
             {
                 Success = false,
                 Error = ex.Message
@@ -25,18 +25,18 @@ public class FileService : IFileService
         }
     }
 
-    public Results<string> GetProductFromFile(string filePath)
+    public Response<string> GetProductFromFile(string filePath)
     {
         try
         {
-            return new Results<string>
+            return new Response<string>
             {
                 Success = true
             };
         }
         catch (Exception ex)
         {
-            return new Results<string>
+            return new Response<string>
             {
                 Success = false,
                 Error = ex.Message
