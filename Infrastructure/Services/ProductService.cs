@@ -7,7 +7,7 @@ public class ProductService : IProductService
 {
     private readonly List<ProductModel> _products = [];
 
-    public Results CreateProduct(CreateProduct product)
+    public Response CreateProduct(CreateProduct product)
     {
         var newProduct = new ProductModel
         {
@@ -19,7 +19,7 @@ public class ProductService : IProductService
 
         _products.Add(newProduct);
 
-        return new Results<ProductModel>
+        return new Response<ProductModel>
         {
             Success = true,
             Error = null,
@@ -27,7 +27,7 @@ public class ProductService : IProductService
         };
     }
 
-    public Results<IEnumerable<ProductModel>> ShowAllProducts(ProductModel product)
+    public Response<IEnumerable<ProductModel>> ShowAllProducts(ProductModel product)
     {
         var productList = new ProductModel()
         {
@@ -37,14 +37,14 @@ public class ProductService : IProductService
             Price = product.Price,
         };
 
-        return new Results<IEnumerable<ProductModel>>
+        return new Response<IEnumerable<ProductModel>>
         {
             Success = true,
             Error = null,
         };
     }
 
-    public ProductModel GetAProduct(string id)
+    public ProductModel GetProduct(string id)
     {
         throw new NotImplementedException();
     }

@@ -1,2 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Infrastructure.Interfaces;
+using Infrastructure.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+string filePath = @"c:\data\products.json";
+
+var builder = Host.CreateApplicationBuilder();
+builder.Services.AddSingleton<IFileRepository>(_ => new JsonFileService(filePath));
+

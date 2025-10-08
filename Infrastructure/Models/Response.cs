@@ -1,12 +1,12 @@
 ﻿namespace Infrastructure.Models;
 
-public class Results
+public class Response
 {
     public bool Success { get; set; }
     public string? Error { get; set; }
 }
 
-public class Results<T> : Results
+public class Response<T> : Response
 {
     public T? Data { get; set; }
 }
