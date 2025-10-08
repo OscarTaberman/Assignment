@@ -25,7 +25,7 @@ public class FileService : IFileRepository
         }
     }
 
-    public Response<string> GetProductFromFile(string filePath)
+    public Response<string> ReadFromFile(string filePath)
     {
         try
         {

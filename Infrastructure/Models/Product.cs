@@ -2,7 +2,7 @@
 
 public class ProductModel
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public string Id { get; set; } = null!;
     public string Name { get; set; } = null!;
     public string? ArticleNumber { get; set; }
     public string Description { get; set; } = null!;

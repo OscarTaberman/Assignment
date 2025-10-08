@@ -6,11 +6,18 @@ namespace Infrastructure.Services;
 public class ProductService : IProductService
 {
     private readonly List<ProductModel> _products = [];
+    private readonly IGuidGenerator _guidGenerator;
+
+    public ProductService(IGuidGenerator guidGenerator)
+    {
+        _guidGenerator = guidGenerator;
+    }
 
     public Response CreateProduct(CreateProduct product)
     {
         var newProduct = new ProductModel
         {
+            Id = _guidGenerator.GenerateGuid(),
             Name = product.Name,
             ArticleNumber = product.ArticleNumber,
             Description = product.Description,
@@ -29,25 +36,30 @@ public class ProductService : IProductService
 
     public Response<IEnumerable<ProductModel>> ReadAllProducts(ProductModel product)
     {
-        var productList = new ProductModel()
-        {
-            Id = product.Id,
-            Name = product.Name,
-            ArticleNumber = product.ArticleNumber,
-            Description = product.Description,
-            Price = product.Price,
-        };
-
         return new Response<IEnumerable<ProductModel>>
         {
             Success = true,
-            Error = null,
+            Data = _products,
         };
     }
 
-    public ProductModel GetProduct(string id)
+    public Response<ProductModel> GetProductById(string id)
     {
-        throw new NotImplementedException();
+        var productById = _products.FirstOrDefault(p => p.Id == id);
+
+        if (productById is null)
+        {
+            return new Response<ProductModel>
+            {
+                Success = false,
+                Error = $"No product found with: {id}"
+            };
+        }
+        return new Response<ProductModel>
+        {
+            Success = true,
+            Data = productById
+        };
     }
 
     public bool UpdateProduct(string id, UpdateProduct product)

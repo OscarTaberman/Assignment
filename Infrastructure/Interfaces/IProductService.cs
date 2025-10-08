@@ -6,7 +6,7 @@ public interface IProductService
 {
     Response CreateProduct(CreateProduct product);
     Response<IEnumerable<ProductModel>> ReadAllProducts(ProductModel product);
-    ProductModel GetProduct(string id);
+    Response<ProductModel> GetProductById(string id);
     bool UpdateProduct(string id, UpdateProduct product);
     bool DeleteProduct(string id);
 }

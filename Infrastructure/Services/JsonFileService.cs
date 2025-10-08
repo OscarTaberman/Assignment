@@ -37,10 +37,9 @@ public class JsonFileService : IFileRepository
             };
         }
     }
-    public Response<string> GetProductFromFile(string filePath)
+    public Response<string> ReadFromFile(string filePath)
     {
         var productContent = File.ReadAllText(_filePath);
-
         try
         {
             
