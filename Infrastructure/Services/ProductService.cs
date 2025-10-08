@@ -44,7 +44,7 @@ public class ProductService : IProductService
         };
     }
 
-    public ProductModel GetAProduct(string id)
+    public ProductModel GetProduct(string id)
     {
         throw new NotImplementedException();
     }

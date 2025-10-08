@@ -3,7 +3,7 @@ using Infrastructure.Models;
 
 namespace Infrastructure.Services;
 
-public class JsonFileService : IFileService
+public class JsonFileService : IFileRepository
 {
     private readonly string _filePath;
 

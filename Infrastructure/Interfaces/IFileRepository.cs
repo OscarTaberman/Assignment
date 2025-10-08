@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Interfaces;
 
-public interface IFileService
+public interface IFileRepository
 {
     Response<string> SaveProductToFile(string filePath, string productContent);
     Response<string> GetProductFromFile(string filePath);

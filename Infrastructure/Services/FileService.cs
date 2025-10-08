@@ -3,7 +3,7 @@ using Infrastructure.Models;
 
 namespace Infrastructure.Services;
 
-public class FileService : IFileService
+public class FileService : IFileRepository
 {
     public Response<string> SaveProductToFile(string filePath, string productContent)
     {
