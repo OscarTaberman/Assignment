@@ -8,3 +8,4 @@ string filePath = @"c:\data\products.json";
 var builder = Host.CreateApplicationBuilder();
 builder.Services.AddSingleton<IFileRepository>(_ => new JsonFileService(filePath));
 
+var main = builder.Build();

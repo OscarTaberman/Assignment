@@ -27,10 +27,11 @@ public class ProductService : IProductService
         };
     }
 
-    public Response<IEnumerable<ProductModel>> ShowAllProducts(ProductModel product)
+    public Response<IEnumerable<ProductModel>> ReadAllProducts(ProductModel product)
     {
         var productList = new ProductModel()
         {
+            Id = product.Id,
             Name = product.Name,
             ArticleNumber = product.ArticleNumber,
             Description = product.Description,
