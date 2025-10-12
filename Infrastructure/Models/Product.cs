@@ -2,7 +2,7 @@
 
 public class ProductModel
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public string Id { get; set; } = null!;
     public string Name { get; set; } = null!;
     public string? ArticleNumber { get; set; }
     public string Description { get; set; } = null!;
@@ -27,7 +27,6 @@ public class UpdateProduct
 
 public class Category
 {
-    public Guid Id { get; init; } = Guid.NewGuid();
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
 
@@ -36,7 +35,6 @@ public class Category
 
 public class ProductSupplier
 {
-    public Guid Id { get; init; } = Guid.NewGuid();
     public string Name { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string? PhoneNumber { get; set; }
