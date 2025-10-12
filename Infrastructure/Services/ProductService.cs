@@ -1,5 +1,8 @@
-﻿using Infrastructure.Interfaces;
+﻿using Infrastructure.Helpers;
+using Infrastructure.Interfaces;
 using Infrastructure.Models;
+using System.Xml.Linq;
+
 
 namespace Infrastructure.Services;
 
@@ -15,6 +18,15 @@ public class ProductService : IProductService
 
     public Response CreateProduct(CreateProduct product)
     {
+        if (_products.Any(p => p.Name.Equals(product.Name, StringComparison.OrdinalIgnoreCase)))
+        {
+            return new Response
+            {
+                Success = false,
+                Error = "The product name already exists",
+            };
+        }
+
         var newProduct = new ProductModel
         {
             Id = _guidGenerator.GenerateGuid(),
@@ -24,7 +36,11 @@ public class ProductService : IProductService
             Price = product.Price,
         };
 
-        _products.Add(newProduct);
+
+        if (!string.IsNullOrWhiteSpace(product.Name))
+        {
+            _products.Add(newProduct);
+        }
 
         return new Response<ProductModel>
         {
@@ -34,7 +50,7 @@ public class ProductService : IProductService
         };
     }
 
-    public Response<IEnumerable<ProductModel>> ReadAllProducts(ProductModel product)
+    public Response<IEnumerable<ProductModel>> ReadAllProducts(ProductModel product)   
     {
         return new Response<IEnumerable<ProductModel>>
         {
@@ -43,32 +59,85 @@ public class ProductService : IProductService
         };
     }
 
-    public Response<ProductModel> GetProductById(string id)
+    public Response<ProductModel> GetProductByArticleNumber(string number)
     {
-        var productById = _products.FirstOrDefault(p => p.Id == id);
+        var productByArticleNumber = _products.FirstOrDefault(an => an.ArticleNumber == number);
 
-        if (productById is null)
+        if (productByArticleNumber is null)
         {
             return new Response<ProductModel>
             {
                 Success = false,
-                Error = $"No product found with: {id}"
+                Error = $"No product found with: {number}"
             };
         }
         return new Response<ProductModel>
         {
             Success = true,
-            Data = productById
+            Data = productByArticleNumber
         };
     }
 
-    public bool UpdateProduct(string id, UpdateProduct product)
+    public Response<ProductModel> GetProductByName(string name)
     {
-        throw new NotImplementedException();
+        var productByName = _products.FirstOrDefault(n => n.Name == name);
+
+        if (productByName is null)
+        {
+            return new Response<ProductModel>
+            {
+                Success = false,
+                Error = $"No product found with: {name}"
+            };
+        }
+        return new Response<ProductModel>
+        {
+            Success = true,
+            Data = productByName
+        };
     }
 
-    public bool DeleteProduct(string id)
+    public Response<ProductModel> UpdateProduct(string name, UpdateProduct product)
     {
-        throw new NotImplementedException();
+        var productByName = _products.FirstOrDefault(n => n.Name == name);
+
+        if (productByName is null)
+        {
+            return new Response<ProductModel>
+            {
+                Success = false,
+                Error = $"No product found with: {name}"
+            };
+        }
+
+        productByName.Name = product.Name;
+        productByName.ArticleNumber = product.ArticleNumber;
+        productByName.Description = product.Description;
+        productByName.Price = product.Price;
+
+        return new Response<ProductModel>
+        {
+            Success = true,
+            Data = productByName
+        };
+    }
+
+    public Response<ProductModel> DeleteProduct(string name)
+    {
+        var productByName = _products.FirstOrDefault(n => n.Name == name);
+        
+        if (productByName is null)
+        {
+            return new Response<ProductModel>
+            {
+                Success = false,
+                Error = $"No product found with: {name}"
+            };
+        }
+
+        return new Response<ProductModel>
+        {
+            Success = true
+        };
     }
 }
