@@ -1,24 +1,25 @@
 ﻿using Infrastructure.Helpers;
 using Infrastructure.Interfaces;
 using Infrastructure.Models;
-using System.Xml.Linq;
 
 
 namespace Infrastructure.Services;
 
 public class ProductService : IProductService
 {
-    private readonly List<ProductModel> _products = [];
+    private readonly List<ProductModel> _productList = [];
     private readonly IGuidGenerator _guidGenerator;
+    private readonly JsonFileService _fileService;
 
-    public ProductService(IGuidGenerator guidGenerator)
+    public ProductService(IGuidGenerator guidGenerator, IFileRepository fileRepository)
     {
         _guidGenerator = guidGenerator;
+        _fileService = (JsonFileService)fileRepository;
     }
 
     public Response CreateProduct(CreateProduct product)
     {
-        if (_products.Any(p => p.Name.Equals(product.Name, StringComparison.OrdinalIgnoreCase)))
+        if (_productList.Any(p => p.Name.Equals(product.Name, StringComparison.OrdinalIgnoreCase)))
         {
             return new Response
             {
@@ -35,18 +36,16 @@ public class ProductService : IProductService
             Description = product.Description,
             Price = product.Price,
         };
+        
+        _productList.Add(newProduct);
 
-
-        if (!string.IsNullOrWhiteSpace(product.Name))
-        {
-            _products.Add(newProduct);
-        }
+        var saveProduct = _fileService.SaveProductToFile(_productList);
 
         return new Response<ProductModel>
         {
-            Success = true,
-            Error = null,
-            Data = newProduct
+            Success = saveProduct.Success,
+            Error = saveProduct.Error,
+            Data = saveProduct.Success ? newProduct : null
         };
     }
 
@@ -55,13 +54,13 @@ public class ProductService : IProductService
         return new Response<IEnumerable<ProductModel>>
         {
             Success = true,
-            Data = _products,
+            Data = _productList,
         };
     }
 
     public Response<ProductModel> GetProductByArticleNumber(string number)
     {
-        var productByArticleNumber = _products.FirstOrDefault(an => an.ArticleNumber == number);
+        var productByArticleNumber = _productList.FirstOrDefault(an => an.ArticleNumber == number);
 
         if (productByArticleNumber is null)
         {
@@ -80,7 +79,7 @@ public class ProductService : IProductService
 
     public Response<ProductModel> GetProductByName(string name)
     {
-        var productByName = _products.FirstOrDefault(n => n.Name == name);
+        var productByName = _productList.FirstOrDefault(n => n.Name == name);
 
         if (productByName is null)
         {
@@ -99,7 +98,7 @@ public class ProductService : IProductService
 
     public Response<ProductModel> UpdateProduct(string name, UpdateProduct product)
     {
-        var productByName = _products.FirstOrDefault(n => n.Name == name);
+        var productByName = _productList.FirstOrDefault(n => n.Name == name);
 
         if (productByName is null)
         {
@@ -124,7 +123,7 @@ public class ProductService : IProductService
 
     public Response<ProductModel> DeleteProduct(string name)
     {
-        var productByName = _products.FirstOrDefault(n => n.Name == name);
+        var productByName = _productList.FirstOrDefault(n => n.Name == name);
         
         if (productByName is null)
         {
