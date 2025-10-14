@@ -5,14 +5,14 @@ namespace Infrastructure.Services;
 
 public class FileService : IFileRepository
 {
-    public Response<string> SaveProductToFile(string filePath, string productContent)
+    public Response<string> SaveProductToFile<T>(T data)
     {
         try
         {
             return new Response<string>
             {
                 Success = true,
-                Data = productContent
+                Data = data?.ToString()
             };
         }
         catch (Exception ex)
