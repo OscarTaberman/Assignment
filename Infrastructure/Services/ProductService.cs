@@ -7,7 +7,7 @@ namespace Infrastructure.Services;
 
 public class ProductService : IProductService
 {
-    private readonly List<ProductModel> _productList = [];
+    private List<ProductModel> _productList = [];
     private readonly IGuidGenerator _guidGenerator;
     private readonly JsonFileService _fileService;
 
@@ -15,6 +15,12 @@ public class ProductService : IProductService
     {
         _guidGenerator = guidGenerator;
         _fileService = (JsonFileService)fileRepository;
+
+        var response = _fileService.ReadFromFile<List<ProductModel>>();
+        if (response.Success && response.Data is not null)
+            _productList = response.Data;
+        else
+            _productList = [];
     }
 
     public Response CreateProduct(CreateProduct product)
@@ -58,25 +64,6 @@ public class ProductService : IProductService
         };
     }
 
-    public Response<ProductModel> GetProductByArticleNumber(string number)
-    {
-        var productByArticleNumber = _productList.FirstOrDefault(an => an.ArticleNumber == number);
-
-        if (productByArticleNumber is null)
-        {
-            return new Response<ProductModel>
-            {
-                Success = false,
-                Error = $"No product found with: {number}"
-            };
-        }
-        return new Response<ProductModel>
-        {
-            Success = true,
-            Data = productByArticleNumber
-        };
-    }
-
     public Response<ProductModel> GetProductByName(string name)
     {
         var productByName = _productList.FirstOrDefault(n => n.Name == name);
@@ -96,6 +83,26 @@ public class ProductService : IProductService
         };
     }
 
+    public Response<ProductModel> GetProductByArticleNumber(string number)
+    {
+        var productByArticleNumber = _productList.FirstOrDefault(an => an.ArticleNumber == number);
+
+        if (productByArticleNumber is null)
+        {
+            return new Response<ProductModel>
+            {
+                Success = false,
+                Error = $"No product found with: {number}"
+            };
+        }
+        return new Response<ProductModel>
+        {
+            Success = true,
+            Data = productByArticleNumber
+        };
+    }
+
+
     public Response<ProductModel> UpdateProduct(string name, UpdateProduct product)
     {
         var productByName = _productList.FirstOrDefault(n => n.Name == name);
@@ -113,6 +120,8 @@ public class ProductService : IProductService
         productByName.ArticleNumber = product.ArticleNumber;
         productByName.Description = product.Description;
         productByName.Price = product.Price;
+
+        _fileService.SaveProductToFile(_productList);
 
         return new Response<ProductModel>
         {
@@ -133,6 +142,10 @@ public class ProductService : IProductService
                 Error = $"No product found with: {name}"
             };
         }
+
+        _productList.Remove(productByName);
+
+        _fileService.SaveProductToFile(_productList);
 
         return new Response<ProductModel>
         {

@@ -17,5 +17,4 @@ var program = builder.Build();
 
 var menuService = program.Services.GetRequiredService<MenuService>();
 
-// Kör menyn
 menuService.Run();

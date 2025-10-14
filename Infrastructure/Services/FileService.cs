@@ -25,18 +25,18 @@ public class FileService : IFileRepository
         }
     }
 
-    public Response<string> ReadFromFile(string filePath)
+    public Response<T> ReadFromFile<T>()
     {
         try
         {
-            return new Response<string>
+            return new Response<T>
             {
                 Success = true
             };
         }
         catch (Exception ex)
         {
-            return new Response<string>
+            return new Response<T>
             {
                 Success = false,
                 Error = ex.Message

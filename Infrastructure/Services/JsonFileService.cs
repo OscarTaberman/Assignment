@@ -40,15 +40,15 @@ public class JsonFileService : IFileRepository
             };
         }
     }
-    public Response<string> ReadFromFile(string filePath)
+    public Response<T> ReadFromFile<T>()
     {
         try
         {
             var json = File.ReadAllText(_filePath);
 
-            var productContent = JsonSerializer.Deserialize<string>(json);
+            var productContent = JsonSerializer.Deserialize<T>(json);
 
-            return new Response<string>
+            return new Response<T>
             {
                 Success = true,
                 Data = productContent
@@ -56,7 +56,7 @@ public class JsonFileService : IFileRepository
         }
         catch (Exception ex)
         {
-            return new Response<string>
+            return new Response<T>
             {
                 Success = false,
                 Error = $"Failed to read product: {ex.Message}"
