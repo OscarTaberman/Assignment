@@ -22,7 +22,9 @@ public class MenuService(IProductService productService)
             Console.WriteLine("4. Find Product By Article Number");
             Console.WriteLine();
             Console.WriteLine("5. Update Product");
-            Console.WriteLine("6. Remove Product");
+            Console.WriteLine("6. Delete Product");
+            Console.WriteLine();
+            Console.WriteLine("0. Exit application");
             Console.WriteLine("_________________");
             Console.Write("Choose an option: ");
             var options = Console.ReadLine();
@@ -58,6 +60,13 @@ public class MenuService(IProductService productService)
                     Console.Clear();
                     DeleteProduct();
                     break;
+
+                case "0":
+                    return;
+
+                default:
+                    Console.Clear();
+                    break;
             }
 
         }
@@ -79,7 +88,7 @@ public class MenuService(IProductService productService)
         var price = decimal.Parse(Console.ReadLine()!);
         Console.WriteLine();
 
-        var product = new CreateProduct()
+        var newProduct = new CreateProduct()
         {
             Name = name,
             ArticleNumber = articlenumber,
@@ -87,7 +96,7 @@ public class MenuService(IProductService productService)
             Price = price,
         };
 
-        var result = _productService.CreateProduct(product);
+        var result = _productService.CreateProduct(newProduct);
         if (result.Success)
             Console.WriteLine("Product created successfully.");
         else
@@ -108,7 +117,10 @@ public class MenuService(IProductService productService)
         {
             foreach (var product in response.Data)
             {
-                Console.WriteLine(product.Name);
+                Console.WriteLine($"Id:     {product.Id}");
+                Console.WriteLine($"Name:   {product.Name}");
+                Console.WriteLine($"Price:  {product.Price} kr");
+                Console.WriteLine();
             }
         }
         else
@@ -153,7 +165,7 @@ public class MenuService(IProductService productService)
 
     private void GetProductByArticleNumber()
     {
-        Console.WriteLine("Enter existing product's name: ");
+        Console.WriteLine("Enter existing product's article number: ");
         var findArticleNumber = Console.ReadLine();
 
         var response = _productService.GetProductByArticleNumber(findArticleNumber!);
@@ -181,12 +193,72 @@ public class MenuService(IProductService productService)
 
     private void UpdateProduct()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Enter existing product's name: ");
+        var findName = Console.ReadLine();
+
+        var response = _productService.GetProductByName(findName!);
+        if (response.Success && response.Data != null)
+        {
+            Console.WriteLine("Enter a product name: ");
+            var name = Console.ReadLine()!;
+            Console.WriteLine();
+            Console.WriteLine("Enter an article number: ");
+            var articlenumber = Console.ReadLine();
+            Console.WriteLine();
+            Console.WriteLine("Enter a product description: ");
+            var description = Console.ReadLine()!;
+            Console.WriteLine();
+            Console.WriteLine("Enter a product price: ");
+            var price = decimal.Parse(Console.ReadLine()!);
+            Console.WriteLine();
+
+            var updatedProduct = new UpdateProduct
+            {
+                Name = name,
+                ArticleNumber = articlenumber,
+                Description = description,
+                Price = price,
+            };
+
+            var result = _productService.UpdateProduct(findName!, updatedProduct);
+            if (result.Success)
+                Console.WriteLine("Product updated successfully.");
+            else
+                Console.WriteLine("Failed to update product.");
+        }
+
+        Console.WriteLine("_____________________________");
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+        Console.Clear();
     }
 
     private void DeleteProduct()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Enter existing product's name: ");
+        var findName = Console.ReadLine();
+
+        var response = _productService.GetProductByName(findName!);
+        if (response.Success && response.Data != null)
+        {
+            Console.WriteLine($"Do you want to delete {findName}? y/n: ");
+            var delete = Console.ReadLine();
+
+            switch (delete)
+            {
+                case "y":
+                    var yes = _productService.DeleteProduct(findName!);
+
+                    break;
+
+                case "n":
+                    break;
+            }
+        }
+        Console.WriteLine("_____________________________");
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+        Console.Clear();
     }
 
     public void Run()
