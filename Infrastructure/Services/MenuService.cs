@@ -12,7 +12,7 @@ public class MenuService(IProductService productService)
         while (true)
         {
 
-            Console.Clear();
+
             Console.WriteLine("----  MENU OPTIONS  ----");
             Console.WriteLine();
             Console.WriteLine("1. Create Product");
@@ -93,9 +93,10 @@ public class MenuService(IProductService productService)
         else
             Console.WriteLine("Failed to create product.");
 
-        Console.WriteLine();
-        Console.WriteLine("Press any key to continue");
+        Console.WriteLine("_____________________________");
+        Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
+        Console.Clear();
     }
 
     private void ReadAllProducts()
@@ -116,6 +117,10 @@ public class MenuService(IProductService productService)
             if (!string.IsNullOrEmpty(response.Error))
                 Console.WriteLine($"Error: {response.Error}");
         }
+        Console.WriteLine("_____________________________");
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+        Console.Clear();
     }
 
     private void GetProductByName()
@@ -126,11 +131,12 @@ public class MenuService(IProductService productService)
         var response = _productService.GetProductByName(findName!);
         if (response.Success && response.Data != null)
         {
+            Console.WriteLine();
             var product = response.Data;
             Console.WriteLine($"Name: {product.Name}");
             Console.WriteLine($"Article Number: {product.ArticleNumber}");
             Console.WriteLine($"Description: {product.Description}");
-            Console.WriteLine($"Price: {product.Price}");
+            Console.WriteLine($"Price: {product.Price} kr");
         }
         else
         {
@@ -139,14 +145,38 @@ public class MenuService(IProductService productService)
                 Console.WriteLine($"Error: {response.Error}");
         }
 
-        Console.WriteLine();
-        Console.WriteLine("Press any key to continue");
+        Console.WriteLine("_____________________________");
+        Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
+        Console.Clear();
     }
 
     private void GetProductByArticleNumber()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Enter existing product's name: ");
+        var findArticleNumber = Console.ReadLine();
+
+        var response = _productService.GetProductByArticleNumber(findArticleNumber!);
+        if (response.Success && response.Data != null)
+        {
+            Console.WriteLine();
+            var product = response.Data;
+            Console.WriteLine($"Name: {product.Name}");
+            Console.WriteLine($"Article Number: {product.ArticleNumber}");
+            Console.WriteLine($"Description: {product.Description}");
+            Console.WriteLine($"Price: {product.Price} kr");
+        }
+        else
+        {
+            Console.WriteLine("Failed to find the product.");
+            if (!string.IsNullOrEmpty(response.Error))
+                Console.WriteLine($"Error: {response.Error}");
+        }
+
+        Console.WriteLine("_____________________________");
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+        Console.Clear();
     }
 
     private void UpdateProduct()

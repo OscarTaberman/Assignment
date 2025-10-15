@@ -55,8 +55,9 @@ public class ProductService : IProductService
         };
     }
 
-    public Response<IEnumerable<ProductModel>> ReadAllProducts(ProductModel product)   
+    public Response<IEnumerable<ProductModel>> ReadAllProducts(ProductModel product)
     {
+        Console.WriteLine($"Products loaded: {_productList.Count}\n");
         return new Response<IEnumerable<ProductModel>>
         {
             Success = true,
