@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Interfaces;
 using Infrastructure.Models;
+using System.Text.Json;
 
 namespace Infrastructure.Services;
 
@@ -11,7 +12,7 @@ public class JsonFileService : IFileRepository
     {
         _filePath = filePath;
     }
-    public Response<string> SaveProductToFile(string filePath, string productContent)
+    public Response<string> SaveProductToFile<T>(T data)
     {
         try
         {
@@ -19,7 +20,9 @@ public class JsonFileService : IFileRepository
             if (!string.IsNullOrEmpty(datadirectory)) 
                 Directory.CreateDirectory(datadirectory);
 
-            File.WriteAllText(_filePath, productContent);
+            var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+
+            File.WriteAllText(_filePath, json);
 
             return new Response<string>
                 {
@@ -37,13 +40,15 @@ public class JsonFileService : IFileRepository
             };
         }
     }
-    public Response<string> ReadFromFile(string filePath)
+    public Response<T> ReadFromFile<T>()
     {
-        var productContent = File.ReadAllText(_filePath);
         try
         {
-            
-            return new Response<string>
+            var json = File.ReadAllText(_filePath);
+
+            var productContent = JsonSerializer.Deserialize<T>(json);
+
+            return new Response<T>
             {
                 Success = true,
                 Data = productContent
@@ -51,7 +56,7 @@ public class JsonFileService : IFileRepository
         }
         catch (Exception ex)
         {
-            return new Response<string>
+            return new Response<T>
             {
                 Success = false,
                 Error = $"Failed to read product: {ex.Message}"

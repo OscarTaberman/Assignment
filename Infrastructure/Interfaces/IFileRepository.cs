@@ -4,6 +4,6 @@ namespace Infrastructure.Interfaces;
 
 public interface IFileRepository
 {
-    Response<string> SaveProductToFile(string filePath, string productContent);
-    Response<string> ReadFromFile(string filePath);
+    Response<string> SaveProductToFile<T>(T data);
+    Response<T> ReadFromFile<T>();
 }
