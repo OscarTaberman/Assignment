@@ -4,7 +4,7 @@ using Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-string filePath = @"C:\data\products.json";
+string filePath = @"C:\data\products.txt";
 
 var builder = Host.CreateApplicationBuilder();
 builder.Services.AddSingleton<IFileRepository>(sp => new JsonFileService(filePath));
