@@ -73,10 +73,17 @@ public class MenuService(IProductService productService)
 
     }
 
+
     private void CreateProduct()
     {
         Console.WriteLine("Enter a product name: ");
         var name = Console.ReadLine()!;
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            Console.WriteLine("Invalid input. Please try again.");
+        }
+
         Console.WriteLine();
         Console.WriteLine("Enter an article number: ");
         var articlenumber = Console.ReadLine();
@@ -126,7 +133,7 @@ public class MenuService(IProductService productService)
         else
         {
             Console.WriteLine("Failed to read products.");
-            if (!string.IsNullOrEmpty(response.Error))
+            if (!string.IsNullOrWhiteSpace(response.Error))
                 Console.WriteLine($"Error: {response.Error}");
         }
         Console.WriteLine("_____________________________");
@@ -153,7 +160,7 @@ public class MenuService(IProductService productService)
         else
         {
             Console.WriteLine("Failed to find the product.");
-            if (!string.IsNullOrEmpty(response.Error))
+            if (!string.IsNullOrWhiteSpace(response.Error))
                 Console.WriteLine($"Error: {response.Error}");
         }
 
@@ -181,7 +188,7 @@ public class MenuService(IProductService productService)
         else
         {
             Console.WriteLine("Failed to find the product.");
-            if (!string.IsNullOrEmpty(response.Error))
+            if (!string.IsNullOrWhiteSpace(response.Error))
                 Console.WriteLine($"Error: {response.Error}");
         }
 
