@@ -13,36 +13,39 @@ namespace Infrastructure.Tests
         [Fact]
         public void SaveProductToFile_ShouldCreateFile()
         {
+            // Arrange - create an instance from JsonFileService and a product from ProductModel with Id, Name, Description and Price
             var service = new JsonFileService(_testFilePath);
             var data = new List<ProductModel>
             {
-                new ProductModel { Id = "1", Name = "Product A", Description = "Test", Price = 10 }
+                new() { Id = "1", Name = "Product A", Description = "Test", Price = 10 }
             };
 
+            // Act - use the method to save the product
             var result = service.SaveProductToFile(data);
 
+            // Assert - should return Success and true if the file is saved
             Assert.True(result.Success);
             Assert.True(File.Exists(_testFilePath));
 
-            File.Delete(_testFilePath);
+
         }
 
         [Fact]
         public void ReadFromFile_ShouldReturnData()
         {
-            // Arange
+            // Arrange - create an instance from JsonFileService and a product from ProductModel with Id, Name, Description and Price
             var service = new JsonFileService(_testFilePath);
             var products = new List<ProductModel>
             {
                 new ProductModel { Id = "1", Name = "Product A", Description = "Test", Price = 10 }
             };
 
-            // Act 
+            // Act - save the product and use the method to read the product in the file
             service.SaveProductToFile(products);
 
             var result = service.ReadFromFile<List<ProductModel>>();
 
-            // Assert
+            // Assert - should return true, content is not null and no duplications
             Assert.True(result.Success);
             Assert.NotNull(result.Data);
             Assert.Single(result.Data);
