@@ -25,12 +25,39 @@ public class ProductService : IProductService
 
     public Response CreateProduct(CreateProduct product)
     {
+        if (string.IsNullOrWhiteSpace(product.Name))
+        {
+            return new Response
+            {
+                Success = false,
+                Error = "Product name cannot be empty."
+            };
+        }
+
+        if (string.IsNullOrWhiteSpace(product.ArticleNumber))
+        {
+            return new Response
+            {
+                Success = false,
+                Error = "Article number cannot be empty."
+            };
+        }
+
+        if (product.Price <= 0)
+        {
+            return new Response
+            {
+                Success = false,
+                Error = "Product price cannot be zero."
+            };
+        }
+
         if (_productList.Any(p => p.Name.Equals(product.Name, StringComparison.OrdinalIgnoreCase)))
         {
             return new Response
             {
                 Success = false,
-                Error = "The product name already exists",
+                Error = "The product name already exists.",
             };
         }
 
@@ -74,7 +101,7 @@ public class ProductService : IProductService
             return new Response<ProductModel>
             {
                 Success = false,
-                Error = $"No product found with: {name}"
+                Error = $"No product found with: {name}."
             };
         }
         return new Response<ProductModel>
@@ -93,7 +120,7 @@ public class ProductService : IProductService
             return new Response<ProductModel>
             {
                 Success = false,
-                Error = $"No product found with: {number}"
+                Error = $"No product found with: {number}."
             };
         }
         return new Response<ProductModel>
@@ -113,7 +140,7 @@ public class ProductService : IProductService
             return new Response<ProductModel>
             {
                 Success = false,
-                Error = $"No product found with: {name}"
+                Error = $"No product found with: {name}."
             };
         }
 
@@ -140,7 +167,7 @@ public class ProductService : IProductService
             return new Response<ProductModel>
             {
                 Success = false,
-                Error = $"No product found with: {name}"
+                Error = $"No product found with: {name}."
             };
         }
 

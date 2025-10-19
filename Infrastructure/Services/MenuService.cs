@@ -73,26 +73,21 @@ public class MenuService(IProductService productService)
 
     }
 
-
     private void CreateProduct()
     {
         Console.WriteLine("Enter a product name: ");
         var name = Console.ReadLine()!;
-
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            Console.WriteLine("Invalid input. Please try again.");
-        }
-
         Console.WriteLine();
         Console.WriteLine("Enter an article number: ");
-        var articlenumber = Console.ReadLine();
+        var articlenumber = Console.ReadLine()!;
         Console.WriteLine();
         Console.WriteLine("Enter a product description: ");
-        var description = Console.ReadLine()!;
+        var description = Console.ReadLine();
         Console.WriteLine();
         Console.WriteLine("Enter a product price: ");
-        var price = decimal.Parse(Console.ReadLine()!);
+        var price = (Console.ReadLine()!);
+        decimal.TryParse(price, out decimal decimalPrice);
+   
         Console.WriteLine();
 
         var newProduct = new CreateProduct()
@@ -100,14 +95,14 @@ public class MenuService(IProductService productService)
             Name = name,
             ArticleNumber = articlenumber,
             Description = description,
-            Price = price,
+            Price = decimalPrice,
         };
 
         var result = _productService.CreateProduct(newProduct);
         if (result.Success)
             Console.WriteLine("Product created successfully.");
         else
-            Console.WriteLine("Failed to create product.");
+            Console.WriteLine($"Failed to create product: {result.Error}");
 
         Console.WriteLine("_____________________________");
         Console.WriteLine("Press any key to continue...");
@@ -210,13 +205,19 @@ public class MenuService(IProductService productService)
             var name = Console.ReadLine()!;
             Console.WriteLine();
             Console.WriteLine("Enter an article number: ");
-            var articlenumber = Console.ReadLine();
+            var articlenumber = Console.ReadLine()!;
             Console.WriteLine();
             Console.WriteLine("Enter a product description: ");
-            var description = Console.ReadLine()!;
+            var description = Console.ReadLine();
             Console.WriteLine();
             Console.WriteLine("Enter a product price: ");
-            var price = decimal.Parse(Console.ReadLine()!);
+            var priceInput = Console.ReadLine();
+            decimal price;
+            while (!decimal.TryParse(priceInput, out price))
+            {
+                Console.WriteLine("Invalid price. Please enter a valid decimal value:");
+                priceInput = Console.ReadLine();
+            }
             Console.WriteLine();
 
             var updatedProduct = new UpdateProduct
